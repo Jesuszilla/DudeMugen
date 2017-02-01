@@ -1,0 +1,9 @@
+R:\dev\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+R:\dev\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+R:\dev\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+R:\dev\WindowsFormsApp1\obj\Debug\BufferingSystemConverter.csprojResolveAssemblyReference.cache
+R:\dev\WindowsFormsApp1\obj\Debug\DudeMugen.BufferConvertForm.resources
+R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+R:\dev\WindowsFormsApp1\obj\Debug\BufferingSystemConverter.csproj.GenerateResource.Cache
+R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
