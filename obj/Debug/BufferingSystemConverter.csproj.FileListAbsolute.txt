@@ -7,3 +7,12 @@ R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resource
 R:\dev\WindowsFormsApp1\obj\Debug\BufferingSystemConverter.csproj.GenerateResource.Cache
 R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+C:\Users\tyoung\Documents\dude\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\tyoung\Documents\dude\bin\Debug\WindowsFormsApp1.exe
+C:\Users\tyoung\Documents\dude\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\tyoung\Documents\dude\obj\Debug\BufferingSystemConverter.csprojResolveAssemblyReference.cache
+C:\Users\tyoung\Documents\dude\obj\Debug\DudeMugen.BufferConvertForm.resources
+C:\Users\tyoung\Documents\dude\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\tyoung\Documents\dude\obj\Debug\BufferingSystemConverter.csproj.GenerateResource.Cache
+C:\Users\tyoung\Documents\dude\obj\Debug\WindowsFormsApp1.exe
+C:\Users\tyoung\Documents\dude\obj\Debug\WindowsFormsApp1.pdb

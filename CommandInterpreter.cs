@@ -90,10 +90,13 @@ namespace DudeMugen
         private const string INIT_TRIGGER_BT       = "trigger1 = !Var({0}) {1}";
         private const string SUBSEQUENT_TRIGGER_BF = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && cond(p2dist X >= 0, (var({4})&{5}) {6}, (var({4})&{7}) {8})\r\n";
         private const string SUBSEQUENT_TRIGGER_UD = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && (var({4})&{5}) {6}\r\n";
+        private const string SUBSEQUENT_TRIGGER_BT = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) {4}\r\n";
         private const string SECONDARY_TRIGGER     = "trigger{0} = e||(var({1}) := {2} + (2**{3}))\r\n\r\n";
         private const string DEINIT_TRIGGER        = "trigger{0} = Var({1}) && (Var({1})&15) = 0\r\ntrigger{0} = e||(var({1}) := 0)\r\n";
         private const string IGNOREHITPAUSE        = "ignorehitpause = 1\r\n";
         private const string VARIABLE_TEMPLATE     = "&& (var({0})&{1}) {2} {3}"; //TODO: Clean the rest of this crap up with this.
+        private const string CMD_TRIGGER_1         = "triggerall = (helper(10371), Var({0})&(2**{1} - 1) > (2**{2})\r\n";
+        private const string CMD_TRIGGER_2         = "triggerall = {0}\r\n";
 
         /// <summary>
         /// Converts the MUGEN .CMD notation to buffering system notation.
@@ -224,7 +227,7 @@ namespace DudeMugen
                             }
 
                             // Iterate through the button arrays.
-                            for (int i=0; i < buttonArrays.Length; i++)
+                            for (int i=0; i < cmdTypes.Count; i++)
                             {
                                 // Buffer the buttons for as long as specified
                                 int buttonArray = buttonArrays[i];
@@ -233,7 +236,7 @@ namespace DudeMugen
                                     buttonArray |= (buttonArray << 7);
                                 }
 
-                                bufferedCommand.AppendFormat(VARIABLE_TEMPLATE, (int)i, buttonArray, cmdTypes[i]);
+                                bufferedCommand.AppendFormat(VARIABLE_TEMPLATE, i, buttonArray, cmdTypes[i] == CommandType.StupidShit ? "=" : ">", cmdTypes[i] == CommandType.StupidShit ? buttonArray : 0);
                             }
 
                             // Build the final string
@@ -253,7 +256,7 @@ namespace DudeMugen
                             if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)CommandType.Press + 3, -1, "= " + directionArray, -1, "= " + (directionArray^xorArray));
                             else
-                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0", directionArray ^ xorArray, "> 0");
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0", directionArray ^ xorArray, "> 0");
                         }
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
@@ -261,13 +264,39 @@ namespace DudeMugen
                             if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)CommandType.Press+3, -1, "= " + directionArray);
                             else
-                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0");
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0");
                         }
                         // Button
-                        else if (buttonArray > 0)
-                            bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, (int)cmdType, buttonArray, "> 0");
+                        else if (buttons.Count > 0)
+                        {
+                            // We're gonna have to build a special string for this.
+                            StringBuilder buttonBuilder = new StringBuilder();
+
+                            // There's all sorts of bullshit here.
+                            int[] buttonArrays = new int[(int)CommandType.StupidShit + 1];
+                            for (int i = buttons.Count - 1; i >= 0; i--)
+                            {
+                                buttonArrays[(int)cmdTypes[i]] |= (int)buttons[i];
+                            }
+
+                            // Iterate through the button arrays.
+                            for (int i = 0; i < cmdTypes.Count; i++)
+                            {
+                                // Buffer the buttons for as long as specified
+                                int buttonArray = buttonArrays[i];
+                                for (int j = 1; j < buttonBufferTime; j++)
+                                {
+                                    buttonArray |= (buttonArray << 7);
+                                }
+
+                                bufferedCommand.AppendFormat(VARIABLE_TEMPLATE, i, buttonArray, cmdTypes[i] == CommandType.StupidShit ? "=" : ">", cmdTypes[i] == CommandType.StupidShit ? buttonArray : 0);
+                            }
+
+                            // Build the final string
+                            bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BT, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, buttonBuilder.ToString());
+                        }
                         else
-                            throw new ArgumentException(String.Format("Malformed command token {0}: unexpected character.", cmdType.ToString()));
+                            throw new ArgumentException(String.Format("Malformed command token {0}: unexpected character.", currCmdType.ToString()));
 
                         // Append the end
                         bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3 + triggerNum);
