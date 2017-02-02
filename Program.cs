@@ -14,16 +14,16 @@ namespace DudeMugen
         [STAThread]
         static void Main()
         {
-            try
-            {
+            //try
+            //{
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new BufferConvertForm());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error", "I am tired of the mugen");
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    MessageBox.Show("I am tired of the mugen", "Error");
+            //}
         }
     }
 }
