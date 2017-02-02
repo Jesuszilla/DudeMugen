@@ -49,27 +49,35 @@ namespace DudeMugen
             /// <summary>
             /// Regular button press
             /// </summary>
-            Press            = 0x0,
+            Press                   = 0x0,
             /// <summary>
             /// Contains a /
             /// </summary>
-            Hold             = 0x1,
+            Hold                    = 0x1,
             /// <summary>
             /// Contains a ~
             /// </summary>
-            Release          = 0x2,
+            Release                 = 0x2,
             /// <summary>
             /// Contains a $
             /// </summary>
-            MultiDirectional = 0x3,
+            MultiDirectional        = 0x3,
+            /// <summary>
+            /// Contains a $ and a ~
+            /// </summary>
+            ReleaseMultiDirectional = 0x4,
+            /// <summary>
+            /// Contains a $ and a /
+            /// </summary>
+            HoldMultiDirectional    = 0x5,
             /// <summary>
             /// Contains a +
             /// </summary>
-            Combination      = 0x4,
+            Combination             = 0x6,
             /// <summary>
             /// Contains that fucking > thing
             /// </summary>
-            StupidShit       = 0x5
+            StupidShit              = 0x7
         }
 
         // Maximum number of commands that can fit in this system.
@@ -79,11 +87,13 @@ namespace DudeMugen
         private const string CMD_HEADER            = "[State 10380, {0} Init]\r\ntype = Null\r\n";
         private const string INIT_TRIGGER_BF       = "trigger1 = !Var({0}) && cond(P2Dist X >= 0, (var({1})&{2}) {3}, (var({1})&{4}) {3})\r\n";
         private const string INIT_TRIGGER_UD       = "trigger1 = !Var({0}) && (var({1})&{2}) {3}\r\n";
+        private const string INIT_TRIGGER_BT       = "trigger1 = !Var({0}) {1}";
         private const string SUBSEQUENT_TRIGGER_BF = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && cond(p2dist X >= 0, (var({4})&{5}) {6}, (var({4})&{7}) {8})\r\n";
         private const string SUBSEQUENT_TRIGGER_UD = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && (var({4})&{5}) {6}\r\n";
         private const string SECONDARY_TRIGGER     = "trigger{0} = e||(var({1}) := {2} + (2**{3}))\r\n\r\n";
         private const string DEINIT_TRIGGER        = "trigger{0} = Var({1}) && (Var({1})&15) = 0\r\ntrigger{0} = e||(var({1}) := 0)\r\n";
         private const string IGNOREHITPAUSE        = "ignorehitpause = 1\r\n";
+        private const string VARIABLE_TEMPLATE     = "&& (var({0})&{1}) {2} {3}"; //TODO: Clean the rest of this crap up with this.
 
         /// <summary>
         /// Converts the MUGEN .CMD notation to buffering system notation.
@@ -108,7 +118,7 @@ namespace DudeMugen
             if (firstCheck.ToString() == command)
             {
 
-                // Comma-delimited string
+                // Separate by commas and +'s
                 string[] tokens = command.Split(',');
                 if (tokens.Length > MAX_NUM_COMMANDS)
                     throw new ArgumentException("Command cannot contain more than 28 presses!");
@@ -126,41 +136,50 @@ namespace DudeMugen
                         throw new ArgumentException("Malformed command string: unexpected length");
 
                     // Variables for each piece
-                    CommandType cmdType = CommandType.Press;
+                    CommandType currCmdType = CommandType.Press;
+                    List<CommandType> cmdTypes = new List<CommandType>(); 
                     Direction directions = Direction.None;
-                    Button buttons = Button.None;
+                    List<Button> buttons = new List<Button>();
 
                     // Iterate through the pieces
                     for (int i = pieces.Length - 1; i >= 0; i--)
                     {
-                        if (i == 0 && pieces[i] == '$')
-                            cmdType = CommandType.MultiDirectional;
-                        else if (i == 0 && pieces[i] == '/')
-                            cmdType = CommandType.Hold;
-                        else if (i == 0 && pieces[i] == '~')
-                            cmdType = CommandType.Release;
-                        else
+                        Direction tryDir = Direction.None;
+                        Button tryButton = Button.None;
+
+                        // Is it a direction?
+                        if (Enum.TryParse(pieces[i] + "", out tryDir))
+                            directions |= tryDir;
+                        // Or a button?
+                        else if (Enum.TryParse(pieces[i] + "", out tryButton))
                         {
-                            Direction tryDir = Direction.None;
-                            Button tryButton = Button.None;
-
-                            // Is it a direction?
-                            if (Enum.TryParse(pieces[i] + "", out tryDir))
-                                directions |= tryDir;
-                            // Or a button?
-                            else if (Enum.TryParse(pieces[i] + "", out tryButton))
-                                buttons |= tryButton;
-                            // Or bullshit?
+                            if (buttons.Contains(tryButton))
+                                throw new ArgumentException(String.Format("Malformed command token at token {0}, character {1}: button appeared more than once.", triggerNum, i));
                             else
-                                throw new ArgumentException(String.Format("Malformed command token at token {0}, character {1}: unexpected character.", triggerNum, i));
+                                buttons.Add(tryButton);
                         }
-                    }
+                        // Or a modifier?
+                        else if (pieces[i] == '$' && currCmdType == CommandType.Press)
+                            currCmdType = CommandType.MultiDirectional;
+                        else if (pieces[i] == '/')
+                            currCmdType = currCmdType == CommandType.MultiDirectional ? CommandType.HoldMultiDirectional : CommandType.Hold;
+                        else if (pieces[i] == '~')
+                            currCmdType = currCmdType == CommandType.MultiDirectional ? CommandType.ReleaseMultiDirectional : CommandType.Release;
+                        // Combinations require some more work
+                        else if (pieces[i] == '+' && buttons.Count > 0)
+                        {
+                            // We can only have a+b+c+x+y+z at most
+                            if (cmdTypes.Count > 5)
+                                throw new ArgumentException(String.Format("Malformed command token at token {0}, character {1}: number of buttons exceeded.", triggerNum, i));
+                            else
+                                cmdTypes.Add(currCmdType);
+                        }
+                        // Or bullshit?
+                        else
+                            throw new ArgumentException(String.Format("Malformed command token at token {0}, character {1}: unexpected character.", triggerNum, i));
 
-                    // Buffer the buttons for as long as specified
-                    int buttonArray = (int)buttons;
-                    for (int i = 1; i < buttonBufferTime; i++)
-                    {
-                        buttonArray |= (buttonArray << 7);
+                        // Add to the command types array
+                        cmdTypes.Add(currCmdType);
                     }
 
                     // Buffer the directions for as long as specified
@@ -178,24 +197,50 @@ namespace DudeMugen
                         // Contains F/B
                         if ((directions & (Direction.F | Direction.B)) > 0)
                         {
-                            if (cmdType == CommandType.StupidShit)
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)cmdType+3, -1, "= " + directionArray, directionArray ^ xorArray);
+                            if (currCmdType == CommandType.StupidShit)
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)currCmdType + 3, -1, "= " + directionArray, directionArray ^ xorArray);
                             else
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType)+3, directionArray, "> 0", directionArray ^ xorArray);
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0", directionArray ^ xorArray);
                         }
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
                         {
-                            if (cmdType == CommandType.StupidShit)
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)cmdType+3, -1, "= " + directionArray);
+                            if (currCmdType == CommandType.StupidShit)
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)currCmdType + 3, -1, "= " + directionArray);
                             else
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0");
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0");
                         }
                         // Button
-                        else if (buttonArray > 0 && cmdType != CommandType.MultiDirectional)
-                            bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)cmdType, buttonArray);
+                        else if (buttons.Count > 0)
+                        {
+                            // We're gonna have to build a special string for this.
+                            StringBuilder buttonBuilder = new StringBuilder();
+
+                            // There's all sorts of bullshit here.
+                            int[] buttonArrays = new int[(int)CommandType.StupidShit+1];
+                            for (int i=buttons.Count-1; i >= 0; i--)
+                            {
+                                buttonArrays[(int)cmdTypes[i]] |= (int)buttons[i];
+                            }
+
+                            // Iterate through the button arrays.
+                            for (int i=0; i < buttonArrays.Length; i++)
+                            {
+                                // Buffer the buttons for as long as specified
+                                int buttonArray = buttonArrays[i];
+                                for (int j = 1; j < buttonBufferTime; j++)
+                                {
+                                    buttonArray |= (buttonArray << 7);
+                                }
+
+                                bufferedCommand.AppendFormat(VARIABLE_TEMPLATE, (int)i, buttonArray, cmdTypes[i]);
+                            }
+
+                            // Build the final string
+                            bufferedCommand.AppendFormat(INIT_TRIGGER_BT, commandVar, buttonBuilder.ToString());
+                        }
                         else
-                            throw new ArgumentException(String.Format("Malformed command token {0}: unexpected character.", cmdType.ToString()));
+                            throw new ArgumentException(String.Format("Malformed command token {0}: unexpected character.", currCmdType.ToString()));
 
                         // Append the end
                         bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3 + triggerNum);
@@ -205,7 +250,7 @@ namespace DudeMugen
                         // Contains F/B
                         if ((directions & (Direction.F | Direction.B)) > 0)
                         {
-                            if (cmdType == CommandType.StupidShit)
+                            if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)CommandType.Press + 3, -1, "= " + directionArray, -1, "= " + (directionArray^xorArray));
                             else
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0", directionArray ^ xorArray, "> 0");
@@ -213,7 +258,7 @@ namespace DudeMugen
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
                         {
-                            if (cmdType == CommandType.StupidShit)
+                            if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)CommandType.Press+3, -1, "= " + directionArray);
                             else
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0");
