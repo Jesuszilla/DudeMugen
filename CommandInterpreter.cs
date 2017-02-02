@@ -79,7 +79,7 @@ namespace DudeMugen
         private const string CMD_HEADER            = "[State 10380, {0} Init]\r\ntype = Null\r\n";
         private const string INIT_TRIGGER_BF       = "trigger1 = !Var({0}) && cond(P2Dist X >= 0, (var({1})&{2}) {3}, (var({1})&{4}) {3})\r\n";
         private const string INIT_TRIGGER_UD       = "trigger1 = !Var({0}) && (var({1})&{2}) {3}\r\n";
-        private const string SUBSEQUENT_TRIGGER_BF = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && cond(p2dist X >= 0, (var({4})&{5}) {7}, (var({4})&{6}) {7})\r\n";
+        private const string SUBSEQUENT_TRIGGER_BF = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && cond(p2dist X >= 0, (var({4})&{5}) {6}, (var({4})&{7}) {8})\r\n";
         private const string SUBSEQUENT_TRIGGER_UD = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && (var({4})&{5}) {6}\r\n";
         private const string SECONDARY_TRIGGER     = "trigger{0} = e||(var({1}) := {2} + (2**{3}))\r\n\r\n";
         private const string DEINIT_TRIGGER        = "trigger{0} = Var({1}) && (Var({1})&15) = 0\r\ntrigger{0} = e||(var({1}) := 0)\r\n";
@@ -178,18 +178,18 @@ namespace DudeMugen
                         // Contains F/B
                         if ((directions & (Direction.F | Direction.B)) > 0)
                         {
-                            if (cmdType != CommandType.MultiDirectional)
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)cmdType+3, directionArray, "> 0", directionArray ^ xorArray);
+                            if (cmdType == CommandType.StupidShit)
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)cmdType+3, -1, "= " + directionArray, directionArray ^ xorArray);
                             else
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)CommandType.Press+3, 0xFFFFFFFF, directionArray ^ xorArray, "= " + directionArray);
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType)+3, directionArray, "> 0", directionArray ^ xorArray);
                         }
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
                         {
-                            if (cmdType != CommandType.MultiDirectional)
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)cmdType+3, directionArray, "> 0");
+                            if (cmdType == CommandType.StupidShit)
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)cmdType+3, -1, "= " + directionArray);
                             else
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)CommandType.Press+3, 0xFFFFFFFF, "= " + directionArray);
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0");
                         }
                         // Button
                         else if (buttonArray > 0 && cmdType != CommandType.MultiDirectional)
@@ -204,10 +204,20 @@ namespace DudeMugen
                     {
                         // Contains F/B
                         if ((directions & (Direction.F | Direction.B)) > 0)
-                            bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, (int)cmdType+3, directionArray, directionArray ^ xorArray, "> 0");
+                        {
+                            if (cmdType == CommandType.StupidShit)
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)CommandType.Press + 3, -1, "= " + directionArray, -1, "= " + (directionArray^xorArray));
+                            else
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0", directionArray ^ xorArray, "> 0");
+                        }
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
-                            bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, (int)cmdType+3, directionArray, "> 0");
+                        {
+                            if (cmdType == CommandType.StupidShit)
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)CommandType.Press+3, -1, "= " + directionArray);
+                            else
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3 + triggerNum, 2 + triggerNum, (int)(cmdType == CommandType.MultiDirectional ? CommandType.Press : cmdType) + 3, directionArray, "> 0");
+                        }
                         // Button
                         else if (buttonArray > 0)
                             bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, (int)cmdType, buttonArray, "> 0");

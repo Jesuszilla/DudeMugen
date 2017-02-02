@@ -27,7 +27,9 @@ namespace DudeMugen
         {
             try
             {
-                outputBox.Text = CommandInterpreter.CMDToBufferingSystem(commandBox.Text, commandBox.Text, Convert.ToByte(buttonBufferTimeBox.Value), Convert.ToByte(directionBufferTimeBox.Value), 9, Convert.ToByte(commandVarBox.Value));
+                outputBox.Text = CommandInterpreter.CMDToBufferingSystem(commandNameBox.Text, commandBox.Text,
+                    Convert.ToByte(buttonBufferTimeBox.Value), Convert.ToByte(directionBufferTimeBox.Value),
+                    Convert.ToByte(elemBufferTimeBox.Value), Convert.ToByte(commandVarBox.Value));
             }
             catch (ArgumentException x)
             {

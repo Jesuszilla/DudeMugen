@@ -39,9 +39,14 @@
             this.convertButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.commandVarBox = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.elemBufferTimeBox = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.commandNameBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.buttonBufferTimeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.directionBufferTimeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.commandVarBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elemBufferTimeBox)).BeginInit();
             this.SuspendLayout();
             // 
             // commandBox
@@ -64,7 +69,7 @@
             // 
             // buttonBufferTimeBox
             // 
-            this.buttonBufferTimeBox.Location = new System.Drawing.Point(12, 86);
+            this.buttonBufferTimeBox.Location = new System.Drawing.Point(12, 128);
             this.buttonBufferTimeBox.Maximum = new decimal(new int[] {
             4,
             0,
@@ -87,7 +92,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 70);
+            this.label2.Location = new System.Drawing.Point(13, 112);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 13);
             this.label2.TabIndex = 3;
@@ -96,7 +101,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(154, 70);
+            this.label3.Location = new System.Drawing.Point(154, 112);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(106, 13);
             this.label3.TabIndex = 5;
@@ -104,7 +109,7 @@
             // 
             // directionBufferTimeBox
             // 
-            this.directionBufferTimeBox.Location = new System.Drawing.Point(157, 86);
+            this.directionBufferTimeBox.Location = new System.Drawing.Point(157, 128);
             this.directionBufferTimeBox.Maximum = new decimal(new int[] {
             8,
             0,
@@ -154,7 +159,7 @@
             // 
             this.convertButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.convertButton.Location = new System.Drawing.Point(447, 86);
+            this.convertButton.Location = new System.Drawing.Point(234, 180);
             this.convertButton.Name = "convertButton";
             this.convertButton.Size = new System.Drawing.Size(115, 23);
             this.convertButton.TabIndex = 8;
@@ -165,7 +170,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(303, 70);
+            this.label5.Location = new System.Drawing.Point(439, 112);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 10;
@@ -173,7 +178,7 @@
             // 
             // commandVarBox
             // 
-            this.commandVarBox.Location = new System.Drawing.Point(306, 86);
+            this.commandVarBox.Location = new System.Drawing.Point(442, 128);
             this.commandVarBox.Maximum = new decimal(new int[] {
             59,
             0,
@@ -193,11 +198,64 @@
             0,
             0});
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(296, 112);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Element Buffer Time";
+            // 
+            // elemBufferTimeBox
+            // 
+            this.elemBufferTimeBox.Location = new System.Drawing.Point(299, 128);
+            this.elemBufferTimeBox.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.elemBufferTimeBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.elemBufferTimeBox.Name = "elemBufferTimeBox";
+            this.elemBufferTimeBox.Size = new System.Drawing.Size(120, 20);
+            this.elemBufferTimeBox.TabIndex = 11;
+            this.elemBufferTimeBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 62);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(85, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Command Name";
+            // 
+            // commandNameBox
+            // 
+            this.commandNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.commandNameBox.Location = new System.Drawing.Point(12, 78);
+            this.commandNameBox.Name = "commandNameBox";
+            this.commandNameBox.Size = new System.Drawing.Size(550, 20);
+            this.commandNameBox.TabIndex = 13;
+            // 
             // BufferConvertForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(574, 699);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.commandNameBox);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.elemBufferTimeBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.commandVarBox);
             this.Controls.Add(this.convertButton);
@@ -215,6 +273,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.buttonBufferTimeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.directionBufferTimeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.commandVarBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elemBufferTimeBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -233,6 +292,10 @@
         private System.Windows.Forms.Button convertButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown commandVarBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown elemBufferTimeBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox commandNameBox;
     }
 }
 
