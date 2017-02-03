@@ -27,9 +27,11 @@ namespace DudeMugen
         {
             try
             {
-                outputBox.Text = CommandInterpreter.CMDToBufferingSystem(commandNameBox.Text, commandBox.Text,
+                Tuple<string,string> data = CommandInterpreter.CMDToBufferingSystem(commandNameBox.Text, commandBox.Text,
                     Convert.ToByte(buttonBufferTimeBox.Value), Convert.ToByte(directionBufferTimeBox.Value),
                     Convert.ToByte(elemBufferTimeBox.Value), Convert.ToByte(commandVarBox.Value));
+                outputBox.Text = data.Item1;
+                triggerBox.Text = data.Item2;
             }
             catch (ArgumentException x)
             {
