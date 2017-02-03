@@ -1,12 +1,5 @@
-R:\dev\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
-R:\dev\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
-R:\dev\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
-R:\dev\WindowsFormsApp1\obj\Debug\BufferingSystemConverter.csprojResolveAssemblyReference.cache
 R:\dev\WindowsFormsApp1\obj\Debug\DudeMugen.BufferConvertForm.resources
-R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
 R:\dev\WindowsFormsApp1\obj\Debug\BufferingSystemConverter.csproj.GenerateResource.Cache
-R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
-R:\dev\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 C:\Users\tyoung\Documents\dude\bin\Debug\WindowsFormsApp1.exe.config
 C:\Users\tyoung\Documents\dude\bin\Debug\WindowsFormsApp1.exe
 C:\Users\tyoung\Documents\dude\bin\Debug\WindowsFormsApp1.pdb
@@ -16,3 +9,9 @@ C:\Users\tyoung\Documents\dude\obj\Debug\WindowsFormsApp1.Properties.Resources.r
 C:\Users\tyoung\Documents\dude\obj\Debug\BufferingSystemConverter.csproj.GenerateResource.Cache
 C:\Users\tyoung\Documents\dude\obj\Debug\WindowsFormsApp1.exe
 C:\Users\tyoung\Documents\dude\obj\Debug\WindowsFormsApp1.pdb
+R:\dev\WindowsFormsApp1\bin\Debug\DudeMugen.exe.config
+R:\dev\WindowsFormsApp1\bin\Debug\DudeMugen.exe
+R:\dev\WindowsFormsApp1\bin\Debug\DudeMugen.pdb
+R:\dev\WindowsFormsApp1\obj\Debug\DudeMugen.Properties.Resources.resources
+R:\dev\WindowsFormsApp1\obj\Debug\DudeMugen.exe
+R:\dev\WindowsFormsApp1\obj\Debug\DudeMugen.pdb
