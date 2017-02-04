@@ -1,0 +1,8 @@
+R:\dev\WindowsFormsApp1\obj\Release\DudeMugen.BufferConvertForm.resources
+R:\dev\WindowsFormsApp1\obj\Release\BufferingSystemConverter.csproj.GenerateResource.Cache
+R:\dev\WindowsFormsApp1\bin\Release\DudeMugen.exe.config
+R:\dev\WindowsFormsApp1\bin\Release\DudeMugen.exe
+R:\dev\WindowsFormsApp1\bin\Release\DudeMugen.pdb
+R:\dev\WindowsFormsApp1\obj\Release\DudeMugen.Properties.Resources.resources
+R:\dev\WindowsFormsApp1\obj\Release\DudeMugen.exe
+R:\dev\WindowsFormsApp1\obj\Release\DudeMugen.pdb

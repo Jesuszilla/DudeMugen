@@ -1,0 +1,14 @@
+R:\dev\MainForm\bin\Debug\MainForm.exe.config
+R:\dev\MainForm\bin\Debug\MainForm.exe
+R:\dev\MainForm\bin\Debug\MainForm.pdb
+R:\dev\MainForm\obj\Debug\MainForm.csprojResolveAssemblyReference.cache
+R:\dev\MainForm\obj\Debug\MainWindow.g.cs
+R:\dev\MainForm\obj\Debug\App.g.cs
+R:\dev\MainForm\obj\Debug\MainForm_MarkupCompile.cache
+R:\dev\MainForm\obj\Debug\MainForm_MarkupCompile.lref
+R:\dev\MainForm\obj\Debug\MainWindow.baml
+R:\dev\MainForm\obj\Debug\MainForm.g.resources
+R:\dev\MainForm\obj\Debug\MainForm.Properties.Resources.resources
+R:\dev\MainForm\obj\Debug\MainForm.csproj.GenerateResource.Cache
+R:\dev\MainForm\obj\Debug\MainForm.exe
+R:\dev\MainForm\obj\Debug\MainForm.pdb

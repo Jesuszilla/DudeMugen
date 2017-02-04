@@ -1,0 +1,138 @@
+﻿<Window x:Class="MainForm.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainForm"
+        mc:Ignorable="d"
+        Title="Dude Mugen" Height="445.842" Width="693.966">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="28*"/>
+            <ColumnDefinition Width="19*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Margin="0,60,0,0" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+        <ToolBar Height="36" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch">
+            <!-- Basic Project Actions -->
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/VSO_NewFile_40x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/ProjectLoadVeto_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/ProjectFolderOpen_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/SaveAll_32x.png" />
+            </Button>
+
+            <!-- Backups -->
+            <Separator Height="32" Margin="4" VerticalAlignment="Top" Width="1" />
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/ProjectFolderLoadBackup_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/SaveAllBackup_32x.png" />
+            </Button>
+
+            <!-- Character Data  -->
+            <Separator Height="32" Margin="4" VerticalAlignment="Top" Width="1" />
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/Application_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/Image_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/ResumePhone_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/XBoxGameController_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/StateMachine_32x.png" />
+            </Button>
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/Audio_32x.png" />
+            </Button>
+
+            <!-- Settings  -->
+            <Separator Height="32" Margin="4" VerticalAlignment="Top" Width="1" />
+            <Button Height="32" VerticalAlignment="Top" Width="32">
+                <Image Source="Resources/Settings_32x.png" />
+            </Button>
+        </ToolBar>
+        
+        <!-- Single File Toolbar -->
+        <ToolBar Height="24" VerticalAlignment="Top" Margin="0,36,0,0" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch">
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/NewFile_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/FolderOpen_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/Save_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/SaveAs_16x.png" />
+            </Button>
+            
+            <!-- Undo/Redo -->
+            <Separator Height="24" Margin="4" VerticalAlignment="Top" Width="1" />
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/Undo_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/Redo_16x.png" />
+            </Button>
+
+            <!-- Cut/Copy/Paste -->
+            <Separator Height="24" Margin="4" VerticalAlignment="Top" Width="1" />
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/Cut_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/Copy_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/Paste_16x.png" />
+            </Button>
+
+            <!-- Sprite Controls -->
+            <Separator Height="24" Margin="4" VerticalAlignment="Top" Width="1" x:Name="SpriteControlsSeparator"/>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/ZoomOriginalSize_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/ZoomOut_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/ZoomIn_16x.png" />
+            </Button>
+
+            <!-- CLSN Controls -->
+            <Separator Height="24" Margin="4" VerticalAlignment="Top" Width="1"/>
+            <Button VerticalAlignment="Top">
+                    <Image Source="Resources/CLSN1_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                    <Image Source="Resources/CLSN2_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                    <Image Source="Resources/CLSN1Default_16x.png" />
+            </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/CLSN2Default_16x.png" />
+            </Button>
+        </ToolBar>
+    </Grid>
+</Window>
