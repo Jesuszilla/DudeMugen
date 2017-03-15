@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MainForm"
         mc:Ignorable="d"
-        Title="Dude Mugen" Height="445.842" Width="693.966">
+        Title="Dude Mugen" Height="444.97" Width="624" MinWidth="624" MinHeight="444">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="28*"/>
             <ColumnDefinition Width="19*"/>
         </Grid.ColumnDefinitions>
-        <TabControl Margin="0,60,0,0" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <TabControl Margin="0,90,0,0" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
@@ -19,7 +19,7 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
-        <ToolBar Height="36" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch">
+        <ToolBar Height="36" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" Margin="0,25,0,0">
             <!-- Basic Project Actions -->
             <Button Height="32" VerticalAlignment="Top" Width="32">
                 <Image Source="Resources/VSO_NewFile_40x.png" />
@@ -70,9 +70,9 @@
                 <Image Source="Resources/Settings_32x.png" />
             </Button>
         </ToolBar>
-        
+
         <!-- Single File Toolbar -->
-        <ToolBar Height="24" VerticalAlignment="Top" Margin="0,36,0,0" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch">
+        <ToolBar Height="24" VerticalAlignment="Top" Margin="0,61,0,0" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch">
             <Button VerticalAlignment="Top">
                 <Image Source="Resources/NewFile_16x.png" />
             </Button>
@@ -85,7 +85,7 @@
             <Button VerticalAlignment="Top">
                 <Image Source="Resources/SaveAs_16x.png" />
             </Button>
-            
+
             <!-- Undo/Redo -->
             <Separator Height="24" Margin="4" VerticalAlignment="Top" Width="1" />
             <Button VerticalAlignment="Top">
@@ -122,17 +122,34 @@
             <!-- CLSN Controls -->
             <Separator Height="24" Margin="4" VerticalAlignment="Top" Width="1"/>
             <Button VerticalAlignment="Top">
-                    <Image Source="Resources/CLSN1_16x.png" />
+                <Image Source="Resources/CLSN1_16x.png" />
             </Button>
             <Button VerticalAlignment="Top">
-                    <Image Source="Resources/CLSN2_16x.png" />
+                <Image Source="Resources/CLSN2_16x.png" />
             </Button>
             <Button VerticalAlignment="Top">
-                    <Image Source="Resources/CLSN1Default_16x.png" />
+                <Image Source="Resources/CLSN1Default_16x.png" />
             </Button>
             <Button VerticalAlignment="Top">
                 <Image Source="Resources/CLSN2Default_16x.png" />
             </Button>
+            <Button VerticalAlignment="Top">
+                <Image Source="Resources/CopyCLSN_16x.png" />
+            </Button>
         </ToolBar>
+        <Menu Height="24" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch">
+            <MenuItem Header="File"/>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="View"/>
+            <MenuItem Header="Definitions"/>
+            <MenuItem Header="Sprites"/>
+            <MenuItem Header="Palettes"/>
+            <MenuItem Header="Animations"/>
+            <MenuItem Header="Commands"/>
+            <MenuItem Header="States"/>
+            <MenuItem Header="Sounds"/>
+            <MenuItem Header="Tools"/>
+            <MenuItem Header="Help"/>
+        </Menu>
     </Grid>
 </Window>

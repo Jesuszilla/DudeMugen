@@ -81,22 +81,24 @@ namespace DudeMugen
         }
 
         // Maximum number of commands that can fit in this system.
-        public const int MAX_NUM_COMMANDS = 28;
+        public const int MAX_NUM_COMMANDS = 27;
 
         // String templates
-        private const string CMD_HEADER            = "[State 10380, {0} Init]\r\ntype = Null\r\n";
-        private const string INIT_TRIGGER_BF       = "trigger1 = !Var({0}) && cond(P2Dist X >= 0, (var({1})&{2}) {3}, (var({1})&{4}) {3})\r\n";
-        private const string INIT_TRIGGER_UD       = "trigger1 = !Var({0}) && (var({1})&{2}) {3}\r\n";
-        private const string INIT_TRIGGER_BT       = "trigger1 = !Var({0}) {1}\r\n";
-        private const string SUBSEQUENT_TRIGGER_BF = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && cond(p2dist X >= 0, (var({4})&{5}) {6}, (var({4})&{7}) {8})\r\n";
-        private const string SUBSEQUENT_TRIGGER_UD = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) && (var({4})&{5}) {6}\r\n";
-        private const string SUBSEQUENT_TRIGGER_BT = "trigger{0} = (Var({1}) & (2**{2} - 1)) > (2**{3}) {4}\r\n";
-        private const string SECONDARY_TRIGGER     = "trigger{0} = e||(var({1}) := {2} + (2**{3}))\r\n\r\n";
-        private const string DEINIT_TRIGGER        = "trigger{0} = Var({1}) && (Var({1})&15) = 0\r\ntrigger{0} = e||(var({1}) := 0)\r\n";
-        private const string IGNOREHITPAUSE        = "ignorehitpause = 1\r\n";
-        private const string VARIABLE_TEMPLATE     = " && (var({0})&{1}) {2} {3}"; //TODO: Clean the rest of this crap up with this.
-        private const string CMD_TRIGGER_1         = "triggerall = (helper(10371), Var({0})&(2**{1} - 1) > (2**{2})\r\n";
-        private const string CMD_TRIGGER_2         = "triggerall = {0}\r\n";
+        private const string CMD_HEADER             = "[State 10380, {0} Init]\r\ntype = Null\r\n";
+        private const string INIT_TRIGGER_BF        = "trigger1 = !Var({0}) && cond(P2Dist X >= 0, (var({1})&{2}) {3}, (var({1})&{4}) {3})\r\n";
+        private const string INIT_TRIGGER_UD        = "trigger1 = !Var({0}) && (var({1})&{2}) {3}\r\n";
+        private const string INIT_TRIGGER_BT        = "trigger1 = !Var({0}) {1}\r\n";
+        private const string SUBSEQUENT_TRIGGER_BF  = "trigger{0} = (Var({1})&(2**{2} - 1)) > (2**{3}) && cond({4}, (var({5})&{6}) {7}, (var({5})&{8}) {9})\r\n";
+        private const string SUBSEQUENT_TRIGGER_UD  = "trigger{0} = (Var({1})&(2**{2} - 1)) > (2**{3}) && (var({4})&{5}) {6}\r\n";
+        private const string SUBSEQUENT_TRIGGER_BT  = "trigger{0} = (Var({1})&(2**{2} - 1)) > (2**{3}) {4}\r\n";
+        private const string SECONDARY_TRIGGER      = "trigger{0} = e||(var({1}) := {2} + (2**{3}){4})\r\n\r\n";
+        private const string SIGN_BIT_SET           = " + cond(P2Dist X >= 0 && (var({0})&{1}) > 0, 0, -2147483648)";
+        private const string SIGN_BIT_CHECK         = "(Var({0})&-2147483648) = 0";
+        private const string DEINIT_TRIGGER         = "trigger{0} = Var({1}) && (Var({1})&15) = 0\r\ntrigger{0} = e||(var({1}) := 0)\r\n";
+        private const string IGNOREHITPAUSE         = "ignorehitpause = 1\r\n";
+        private const string VARIABLE_TEMPLATE      = " && (var({0})&{1}) {2} {3}"; //TODO: Clean the rest of this crap up with this.
+        private const string CMD_TRIGGER_1          = "triggerall = (helper(10371), Var({0})&(2**{1} - 1)) > (2**{2})\r\n";
+        private const string CMD_TRIGGER_2          = "triggerall = {0}\r\n";
 
         /// <summary>
         /// Converts the MUGEN .CMD notation to buffering system notation.
@@ -128,13 +130,16 @@ namespace DudeMugen
                 // Separate by commas and +'s
                 string[] tokens = command.Split(',');
                 if (tokens.Length > MAX_NUM_COMMANDS)
-                    throw new ArgumentException("Command cannot contain more than 28 presses!");
+                    throw new ArgumentException(String.Format("Command cannot contain more than {0} presses!", MAX_NUM_COMMANDS));
 
                 // Triggers always start at 1
                 int triggerNum = 1;
 
                 // Used to properly build the trigger list when the command ends in a button.
                 bool endsInButton = false;
+
+                // Used to determine if the sign bit was already added to the triggers.
+                bool addedSignBitSet = false;
 
                 // Iterate through that shit!
                 foreach (string token in tokens)
@@ -219,7 +224,7 @@ namespace DudeMugen
                             if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)currCmdType + 3, -1, "= " + directionArray, directionArray ^ xorArray);
                             else
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0", directionArray ^ xorArray);
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_BF, commandVar, (int)(currCmdType == CommandType.ReleaseMultiDirectional ? CommandType.Release : currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0", directionArray ^ xorArray);
                         }
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
@@ -227,7 +232,7 @@ namespace DudeMugen
                             if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)currCmdType + 3, -1, "= " + directionArray);
                             else
-                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0");
+                                bufferedCommand.AppendFormat(INIT_TRIGGER_UD, commandVar, (int)(currCmdType == CommandType.ReleaseMultiDirectional ? CommandType.Release : currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0");
                         }
                         // Button
                         else if (buttons.Count > 0)
@@ -263,17 +268,26 @@ namespace DudeMugen
                             throw new ArgumentException(String.Format("Malformed command token {0}: unexpected character.", currCmdType.ToString()));
 
                         // Append the end
-                        bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3+triggerNum);
+                        if ((int)((Direction.F|Direction.B)&directions) > 0)
+                        {
+                            string signBitTrigger = String.Format(SIGN_BIT_SET, (int)(currCmdType == CommandType.ReleaseMultiDirectional ? CommandType.Release : currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray);
+                            bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3+triggerNum, signBitTrigger);
+                            // We added the sign bit trigger to the list, so don't add it again.
+                            addedSignBitSet = true;
+                        }
+                        else
+                            bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3+triggerNum, String.Empty);
                     }
                     else
                     {
                         // Contains F/B
                         if ((directions & (Direction.F | Direction.B)) > 0)
                         {
+                            string signBitCheckStr = addedSignBitSet ? String.Format(SIGN_BIT_CHECK, commandVar) : "P2Dist X >= 0";
                             if (currCmdType == CommandType.StupidShit)
-                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, (int)CommandType.Press + 3, -1, "= " + directionArray, -1, "= " + (directionArray^xorArray));
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, signBitCheckStr, (int)CommandType.Press + 3, -1, "= " + directionArray, -1, "= " + (directionArray^xorArray));
                             else
-                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0", directionArray ^ xorArray, "> 0");
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_BF, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, signBitCheckStr, (int)(currCmdType == CommandType.ReleaseMultiDirectional ? CommandType.Release : currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0", directionArray ^ xorArray, "> 0");
                         }
                         // Contains U/D
                         else if ((directions & (Direction.U | Direction.D)) > 0)
@@ -281,7 +295,7 @@ namespace DudeMugen
                             if (currCmdType == CommandType.StupidShit)
                                 bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, (int)CommandType.Press+3, -1, "= " + directionArray);
                             else
-                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, (int)(currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0");
+                                bufferedCommand.AppendFormat(SUBSEQUENT_TRIGGER_UD, triggerNum, commandVar, 3+triggerNum, 2+triggerNum, (int)(currCmdType == CommandType.ReleaseMultiDirectional ? CommandType.Release : currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray, "> 0");
                         }
                         // Button
                         else if (buttons.Count > 0)
@@ -337,7 +351,20 @@ namespace DudeMugen
 
                         // Append the end
                         if (!endsInButton)
-                            bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3+triggerNum);
+                        {
+                            string signBitTrigger;
+                            if ((int)(directions & (Direction.F | Direction.B)) > 0 && !addedSignBitSet)
+                            {
+                                signBitTrigger = String.Format(SIGN_BIT_SET, (int)(currCmdType == CommandType.ReleaseMultiDirectional ? CommandType.Release : currCmdType == CommandType.MultiDirectional ? CommandType.Press : currCmdType) + 3, directionArray);
+                                // We added the sign bit to the list, so don't add it again.
+                                addedSignBitSet = true;
+                            }
+                            else
+                                signBitTrigger = String.Format(" + (var({0})&-2147483648)", commandVar);
+
+                            // Now append the formatted trigger
+                            bufferedCommand.AppendFormat(SECONDARY_TRIGGER, triggerNum, commandVar, elemBufferTime, 3+triggerNum, signBitTrigger);
+                        }
                     }
 
                     triggerNum++;

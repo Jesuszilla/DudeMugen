@@ -143,6 +143,16 @@ namespace DudeMugen.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CopyCLSN_16x {
+            get {
+                object obj = ResourceManager.GetObject("CopyCLSN_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cut_16x {
             get {
                 object obj = ResourceManager.GetObject("Cut_16x", resourceCulture);
@@ -167,6 +177,16 @@ namespace DudeMugen.Properties {
             get {
                 object obj = ResourceManager.GetObject("FolderOpen_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon {
+            get {
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

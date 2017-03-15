@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-R:\dev\MainForm\obj\Debug\
-MainForm
+R:\dev\WindowsFormsApp1\MainForm\obj\Debug\
+DudeMugen
 none
 false
 DEBUG;TRACE
-R:\dev\MainForm\App.xaml
-11151548125
+R:\dev\WindowsFormsApp1\MainForm\App.xaml
+2-437247356
 
-5-2017746502
+6-1020199152
 14-1001767708
-MainWindow.xaml;
+MainWindow.xaml;AnimationToolPane.xaml;
 
 False
 
