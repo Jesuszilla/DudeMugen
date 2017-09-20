@@ -1,0 +1,14 @@
+﻿<Page x:Class="DudeMugen.Page1"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DudeMugen"
+      mc:Ignorable="d" 
+      d:DesignHeight="300"
+      Title="Page1" Width="170.056">
+
+    <Grid Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+        <TextBlock TextWrapping="Wrap" Text="Animations" VerticalAlignment="Top" Height="16" TextAlignment="Center" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+    </Grid>
+</Page>

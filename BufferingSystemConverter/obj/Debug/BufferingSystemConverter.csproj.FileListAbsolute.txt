@@ -24,3 +24,4 @@ R:\dev\WindowsFormsApp1\BufferingSystemConverter\obj\Debug\DudeMugen.Properties.
 R:\dev\WindowsFormsApp1\BufferingSystemConverter\obj\Debug\BufferingSystemConverter.csproj.GenerateResource.Cache
 R:\dev\WindowsFormsApp1\BufferingSystemConverter\obj\Debug\DudeMugen.exe
 R:\dev\WindowsFormsApp1\BufferingSystemConverter\obj\Debug\DudeMugen.pdb
+R:\dev\WindowsFormsApp1\BufferingSystemConverter\obj\Debug\BufferingSystemConverter.csproj.CoreCompileInputs.cache

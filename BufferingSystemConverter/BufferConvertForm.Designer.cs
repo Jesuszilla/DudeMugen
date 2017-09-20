@@ -253,9 +253,7 @@
             // 
             // label8
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(13, 702);
             this.label8.Name = "label8";
@@ -265,8 +263,7 @@
             // 
             // triggerBox
             // 
-            this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerBox.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.triggerBox.Location = new System.Drawing.Point(12, 718);
@@ -301,7 +298,7 @@
             this.Controls.Add(this.buttonBufferTimeBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.commandBox);
-            this.MinimumSize = new System.Drawing.Size(550, 738);
+            this.MinimumSize = new System.Drawing.Size(587, 480);
             this.Name = "BufferConvertForm";
             this.Text = "Buffering System Converter by Jesuszilla";
             ((System.ComponentModel.ISupportInitialize)(this.buttonBufferTimeBox)).EndInit();

@@ -28,3 +28,4 @@ R:\dev\WindowsFormsApp1\MainForm\obj\Debug\DudeMugen.Properties.Resources.resour
 R:\dev\WindowsFormsApp1\MainForm\obj\Debug\MainForm.csproj.GenerateResource.Cache
 R:\dev\WindowsFormsApp1\MainForm\obj\Debug\MainForm.exe
 R:\dev\WindowsFormsApp1\MainForm\obj\Debug\MainForm.pdb
+R:\dev\WindowsFormsApp1\MainForm\obj\Debug\MainForm.csproj.CoreCompileInputs.cache
